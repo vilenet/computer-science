@@ -1,4 +1,4 @@
-// Program for array rotation Use temp array
+// Program for array rotation "A Juggling Algorithm"
 #include <iostream>
 using namespace std;
 
