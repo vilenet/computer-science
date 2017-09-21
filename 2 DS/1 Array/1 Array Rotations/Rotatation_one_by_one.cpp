@@ -1,4 +1,4 @@
-// Program for array rotation Use temp array
+// Program for array rotation one by one
 #include <iostream>
 using namespace std;
 
