@@ -12,7 +12,28 @@ struct Node* newNode(int newData){
   node->data = newData;
   node->left = NULL;
   node->right = NULL;
-  return
+  return node;
+}
+
+void printPreorder(struct Node* node){
+  if(node == NULL) return;
+  cout << node->data << " ";
+  printPreorder(node->left);
+  printPreorder(node->right);
+}
+
+void printInorder(struct Node* node){
+  if(node == NULL) return;
+  printInorder(node->left);
+  cout << node->data << " ";
+  printInorder(node->right);
+}
+
+void printPostorder(struct Node* node){
+  if(node == NULL) return;
+  printPostorder(node->left);
+  printPostorder(node->right);
+  cout << node->data << " ";
 }
 
 int main()
@@ -22,6 +43,31 @@ int main()
   root->right       = newNode(3);
   root->left->left  = newNode(4);
   root->left->right = newNode(5);
-  
+
+  cout << "\nPreorder traversal of binary tree is \n";
+  printPreorder(root);
+  cout << "\nInorder traversal of binary tree is \n";
+  printInorder(root);
+  cout << "\nPostorder traversal of binary tree is \n";
+  printPostorder(root);
 }
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
