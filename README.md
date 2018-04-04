@@ -1,5 +1,5 @@
 # computer-science
-Algorithms, sorting, searching, Data-structures ...
+Algorithms, Data-structures ...
 
 <h2>Data Structures</h2>
 <h3>Arrays</h3>
