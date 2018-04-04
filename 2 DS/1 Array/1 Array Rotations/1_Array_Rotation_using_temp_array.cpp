@@ -27,9 +27,9 @@ void printArray(int arr[], int N){
  }
 
 int main()
-{
-  const int N = 7;    
-  int arr[N] = {1,2,3,4,5,6,7};
+{ 
+  int arr[N] = {1,2,3,4,5,6,7}; 
+  int N = sizeof(arr)/sizeof(int);	
   rotate(arr, 2, N);
   printArray(arr, N);
  
