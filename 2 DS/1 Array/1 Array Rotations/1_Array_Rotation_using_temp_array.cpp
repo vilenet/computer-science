@@ -1,5 +1,4 @@
 // Program for array rotation. METHOD 1 (Using temp array).
-
 #include <iostream>
 using namespace std;
 
@@ -10,7 +9,7 @@ void printArray(int arr[], int N){
 }
 
  void rotate(int arr[], int d, int n){
-    int temp[d] = {0};
+	int *temp = new int[d];
     
   //1) Store d elements in a temp array
     for(int i = 0; i < d; i++)
@@ -22,7 +21,9 @@ void printArray(int arr[], int N){
   
   //3) Store back the d elements  
     for(int i = 0; i < d; i++)
-      arr[n-d+i] = temp[i];  
+      arr[n-d+i] = temp[i]; 
+
+    delete[] temp;  
  }
 
 int main()
