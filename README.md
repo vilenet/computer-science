@@ -14,3 +14,5 @@ Algorithms, Data-structures ...
   <li><a href="https://github.com/vilenet/computer-science/blob/master/2%20DS/1%20Array/1%20Array%20Rotations/4_Array_Rotation_reversal_algorithm.cpp.cpp">METHOD 4 (The Reversal Algorithm)</a></li>
    <li><a href="https://github.com/vilenet/computer-science/blob/master/2%20DS/1%20Array/1%20Array%20Rotations/5_Array_Rotation_block_swap_algorithm_recursive.cpp.cpp">METHOD 5 (Block swap algorithm. Recursive)</a></li>
 </ol>  
+
+<p><a href="https://github.com/vilenet/computer-science/blob/master/2%20DS/1%20Array/1%20Array%20Rotations/6_Array_Rotation_cyclically_by_one.cpp">Given an array, cyclically rotate the array clockwise by one</a>.
