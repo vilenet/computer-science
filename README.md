@@ -1,6 +1,14 @@
 # computer-science
 Algorithms, Data-structures ...
 
+<hr>
+<h2>Algorithms</h2>
+<h3>Searching</h3>
+<ol>
+  <li><a href="https://github.com/vilenet/computer-science/blob/master/1%20Algo/1%20Search/1_Linear_Search.cpp">Linear Search</a></li>
+</ol>
+
+<hr>
 <h2>Data Structures</h2>
 <h3>Arrays</h3>
 <h4>Array Rotations</h4>
