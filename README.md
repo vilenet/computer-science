@@ -6,6 +6,7 @@ Algorithms, Data-structures ...
 <h3>Searching</h3>
 <ol>
   <li><a href="https://github.com/vilenet/computer-science/blob/master/1%20Algo/1%20Search/1_Linear_Search.cpp">Linear Search</a></li>
+  <li><a href="https://github.com/vilenet/computer-science/blob/master/1%20Algo/1%20Search/2_Binary_Search_Recursive.cpp">Binary Search (Recursive)</a></li>
 </ol>
 
 <br>
