@@ -2,7 +2,7 @@
 Algorithms, Data-structures ...
 
 
-<h2 style="color:#ff0000">Algorithms</h2>
+<font color="red"<h2>Algorithms</h2></font>
 <h3>Searching</h3>
 <ol>
   <li><a href="https://github.com/vilenet/computer-science/blob/master/1%20Algo/1%20Search/1_Linear_Search.cpp">Linear Search</a></li>
