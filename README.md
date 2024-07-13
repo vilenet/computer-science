@@ -1,7 +1,7 @@
 # computer-science
 Algorithms, Data-structures ...
 
-
+<!--
 <h2>Algorithms</h2>
 <h3>Searching</h3>
 <ol>
@@ -31,3 +31,4 @@ Algorithms, Data-structures ...
   <li><a href="https://github.com/vilenet/computer-science/blob/master/2%20DS/1%20Array/1%20Array%20Rotations/6_Array_Rotation_cyclically_by_one.cpp">Given an array, cyclically rotate the array clockwise by one</a>.</li>
 
 </ol>
+-->
