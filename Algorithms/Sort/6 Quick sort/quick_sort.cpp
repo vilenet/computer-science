@@ -31,9 +31,9 @@ int main()
 	int N = sizeof(arr)/sizeof(arr[0]);
 	quickSort(arr, 0, N-1);
 	
-	for (const auto& n : arr) {
-        std::cout << n << " ";
-    }
+	for (const auto& n : arr){
+		std::cout << n << " ";
+	}
 
 	return 0;
 }
