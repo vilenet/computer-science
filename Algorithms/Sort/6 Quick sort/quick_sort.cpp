@@ -6,8 +6,8 @@ int partition(int arr[], int low, int high){
 	int pivot = arr[high];
 	int i = (low - 1);
 
-	for(int j = low; j <= high- 1; j++){
-		if(arr[j] <= pivot){
+	for (int j = low; j <= high - 1; j++){
+		if (arr[j] <= pivot){
         	std::swap(arr[++i], arr[j]);
 		}
 	}
