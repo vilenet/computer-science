@@ -17,8 +17,8 @@ public:
     ~Stack() { delete[] arr; }
 
     bool empty() { return topIndex == -1; }
-    bool isFull()  { return topIndex == capacity - 1; }
-    int  size()    { return topIndex + 1; }
+    bool isFull() { return topIndex == capacity - 1; }
+    int  size() { return topIndex + 1; }
 
     void push(int x) {
         if (isFull()) {
