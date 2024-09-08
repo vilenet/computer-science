@@ -2,7 +2,7 @@
 #include <algorithm>
 
 int partition(int arr[], int low, int high){
-
+	
 	int pivot = arr[high];
 	int i = (low - 1);
 
