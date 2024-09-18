@@ -206,6 +206,65 @@ Node<T>* BinaryTree<T>::insert_node(Node<T>* node, T&& value) {
 }
 
 template <typename T>
+bool BinaryTree<T>::erase (const T& value) {
+    if (!contains(value)) {
+        return false;
+    }
+    root = erase_node(root, value);
+    return true;
+}
+
+template <typename T>
+Node<T>* BinaryTree<T>::erase_node (Node<T>* node, const T& value) {
+    if (!node) { return nullptr; }
+
+    if (value < node->data) {
+        node->left = erase_node(node->left, value);
+    } 
+    else if (value > node->data) {
+        node->right = erase_node(node->right, value);
+    }
+    else {
+        if (!node->left && !node->right) { 
+            // Case 1: Node with no children
+            delete node;
+            count--;
+            return nullptr;
+        }
+        else if (!node->left) {
+            // Case 2.1: One right child
+            Node<T>* temp = node->right;
+            delete node;
+            count--;
+            return temp;
+        }
+        else if (!node->right) {
+            // Case 2.2: One left child
+            Node<T>* temp = node->left;
+            delete node;
+            count--;
+            return temp;
+        }
+        else {
+            // Case 3: Two children
+            // Find the minimum node in the right subtree
+            Node<T>* minNode = node->right;
+            while (minNode->left) {
+                minNode = minNode->left;
+            }
+
+            // Copy the data of the minimal node
+            node->data = minNode->data;
+
+            // Remove the minimum node
+            node->right = erase_node(node->right, minNode->data);
+        }
+    }
+
+    return node;
+}
+
+template <typename T>
 Iterator<T> BinaryTree<T>::begin() const {
     return Iterator<T>(root);
 }
@@ -249,6 +308,7 @@ void test_contains();
 void test_inorder_traversal();
 void test_clear_tree();
 void test_move_semantics();
+void test_erase();
 
 ////////////////////////////// [ MAIN ] /////////////////////////////////////////////
 int main() 
@@ -260,6 +320,8 @@ int main()
     test_inorder_traversal();
     test_clear_tree();
     test_move_semantics();
+    test_erase();
+    
     std::cout << "All tests passed successfully!" << std::endl;
 
     return 0;
@@ -375,4 +437,41 @@ void test_move_semantics() {
 
     assert(tree.contains("Alice") == true);
     assert(tree.contains("Bob") == true);
+}
+
+// Test: removing nodes
+void test_erase() 
+{
+    BinaryTree<int> tree;
+
+    tree.insert(5);
+    tree.insert(3);
+    tree.insert(7);
+    tree.insert(1);
+    tree.insert(4);
+    tree.insert(6);
+    tree.insert(8);
+
+    // Deleting a leaf node (without children)
+    assert(tree.erase(1) == true);  // Node 1 was successfully deleted
+    assert(tree.contains(1) == false);
+    assert(tree.size() == 6);
+
+    // Deleting a node with one child
+    assert(tree.erase(3) == true);  // Node 3 deleted successfully
+    assert(tree.contains(3) == false);
+    assert(tree.size() == 5);
+
+    // Deleting a node with two children
+    assert(tree.erase(7) == true);  // Node 7 was successfully deleted
+    assert(tree.contains(7) == false);
+    assert(tree.size() == 4);
+
+    //Delete the root node
+    assert(tree.erase(5) == true);  // Node 5 (root) was successfully deleted
+    assert(tree.contains(5) == false);
+    assert(tree.size() == 3);
+
+    // Attempting to remove a non-existent element
+    assert(tree.erase(10) == false);  // Node 10 does not exist
 }
