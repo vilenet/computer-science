@@ -211,7 +211,7 @@ Node<T>* BinaryTree<T>::insert_node(Node<T>* node, T&& value) {
 }
 
 template <typename T>
-bool BinaryTree<T>::erase (const T& value) {
+bool BinaryTree<T>::erase(const T& value) {
     if (!contains(value)) {
         return false;
     }
@@ -220,7 +220,7 @@ bool BinaryTree<T>::erase (const T& value) {
 }
 
 template <typename T>
-Node<T>* BinaryTree<T>::erase_node (Node<T>* node, const T& value) {
+Node<T>* BinaryTree<T>::erase_node(Node<T>* node, const T& value) {
     if (!node) { return nullptr; }
 
     if (value < node->data) {
