@@ -1,8 +1,13 @@
 #include <functional>
 #include <iostream>
-#include <cassert>
 #include <vector>
 #include <stack>
+
+// For testing
+#include <algorithm>
+#include <random>
+#include <chrono>
+#include <cassert>
 
 //
 // Node
@@ -161,7 +166,7 @@ bool BinaryTree<T>::insert(const T& value) {
     root = insert_node(root, value);
     // NOTE: 
     // In this example insertion is always successful, even if it is a duplicate,
-    // but here we can implement different behavior depending on the logic of our BinaryTree.
+    // we can implement different behavior depending on the logic.
     return true;
 }
 
@@ -300,7 +305,7 @@ void BinaryTree<T>::inorder_traversal(std::function<void(const T&)> visit) const
 }
 
 
-////////////////////////////// [TESTS declaration ] /////////////////////////////////
+///////////////////////// [ Unit TESTS declaration ] ///////////////////////////
 void test_empty_tree();
 void test_insert_and_size();
 void test_find();
@@ -309,10 +314,16 @@ void test_inorder_traversal();
 void test_clear_tree();
 void test_move_semantics();
 void test_erase();
+///////////////////////// [ Stress TESTS declaration ] /////////////////////////
+void test_massive_insert();
+void test_massive_find();
+void test_massive_erase();
+void test_massive_iteration();
 
-////////////////////////////// [ MAIN ] /////////////////////////////////////////////
+///////////////////////// [ MAIN ] /////////////////////////////////////////////
 int main() 
 {
+    // Unit tests
     test_empty_tree();
     test_insert_and_size();
     test_find();
@@ -321,14 +332,28 @@ int main()
     test_clear_tree();
     test_move_semantics();
     test_erase();
+    std::cout << "Unit tests passed successfully!" << std::endl;
+    // Stress tests
+    test_massive_insert();
+    // NOTE: After successful test_massive_insert test,
+    //       program terminate: "-1073741571 (stack overflow)".
+    //
+    // TODO: Investigate possible solutions:
+    //       1. Using an iterative approach instead of a recursive one 
+    //          for operations: insertion, erasing, clearing.
+    //
+    //       2. Implementation of a balanced tree (AVL-Tree or Red-Black-Tree).
+    //       3. ...
+    test_massive_find();
+    test_massive_erase();
+    test_massive_iteration();
     
-    std::cout << "All tests passed successfully!" << std::endl;
+    std::cout << "Stress tests passed successfully!" << std::endl;
 
     return 0;
 }
 
-////////////////////////////// [TEST implementation ] /////////////////////////////
-
+///////////////////////// [ Unit TEST implementation ] /////////////////////////
 // Test: checking for an empty tree
 void test_empty_tree() {
     BinaryTree<int> tree;
@@ -483,4 +508,105 @@ void test_erase()
     });
 
     assert(result == expected);
+}
+
+///////////////////////// [Stress TESTS implementation ] ///////////////////////
+// Function for measuring test execution time
+template<typename Func>
+void measure_time(const std::string& test_name, Func&& func) {
+    auto start = std::chrono::high_resolution_clock::now();
+    func();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << test_name << " - elapsed time: " << elapsed.count() << " seconds" << std::endl;
+}
+
+// Testing mass insertion of elements into the tree
+void test_massive_insert() {
+    const size_t test_size = 1000000;  // 1 million elements
+    BinaryTree<int> tree;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(1, test_size * 10);
+
+    measure_time("Massive Insert", [&]() {
+        for (size_t i = 0; i < test_size; ++i) {
+            tree.insert(dist(gen));  // Insert random values
+        }
+    });
+
+    assert(tree.size() == test_size);
+    std::cout << "Massive Insert test passed!" << std::endl;
+}
+
+// Testing mass find for elements in the tree
+void test_massive_find() {
+    const size_t test_size = 1000000;  // 1 million elements
+    BinaryTree<int> tree;
+    std::vector<int> values;
+    values.reserve(test_size);
+    
+    for (int i = 1; i <= test_size; ++i) {
+        values.push_back(i);
+        tree.insert(i);
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(1, test_size);
+
+    measure_time("Massive Find", [&]() {
+        for (size_t i = 0; i < test_size / 2; ++i) {
+            int value_to_find = dist(gen);
+            assert(tree.contains(value_to_find));  // Check for random elements
+        }
+    });
+
+    std::cout << "Massive Find test passed!" << std::endl;
+}
+
+// Test mass erasing of elements from the tree
+void test_massive_erase() {
+    const size_t test_size = 1000000;  // 1 million elements
+    BinaryTree<int> tree;
+    std::vector<int> values;
+    values.reserve(test_size);
+
+    for (int i = 1; i <= test_size; ++i) {
+        values.push_back(i);
+        tree.insert(i);
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::shuffle(values.begin(), values.end(), gen);  // Shuffle values ​​for random deletion
+
+    measure_time("Massive Erase", [&]() {
+        for (size_t i = 0; i < test_size / 2; ++i) {
+            assert(tree.erase(values[i]));  // Remove elements
+        }
+    });
+
+    assert(tree.size() == test_size / 2);  // Half of the elements should remain
+    std::cout << "Massive Erase test passed!" << std::endl;
+}
+
+// Testing an iterator with a large number of elements
+void test_massive_iteration() {
+    const size_t test_size = 1000000;  // 1 million elements
+    BinaryTree<int> tree;
+
+    for (int i = 1; i <= test_size; ++i) {
+        tree.insert(i);
+    }
+
+    measure_time("Massive Iteration", [&]() {
+        int count = 0;
+        for (auto it = tree.begin(); it != tree.end(); ++it) {
+            ++count;
+        }
+        assert(count == test_size);  // Make sure we go through all the elements
+    });
+
+    std::cout << "Massive Iteration test passed!" << std::endl;
 }
