@@ -1,6 +1,7 @@
 #include <functional>
 #include <iostream>
 #include <cassert>
+#include <vector>
 #include <stack>
 
 //
@@ -45,8 +46,8 @@ private:
     size_t   count;
 
 private:
-    Node<T>* find_node  (const T& value) const;
     Node<T>* insert_node(Node<T>* node, const T& value);
+    Node<T>* insert_node(Node<T>* node, T&& value);
     Node<T>* erase_node (Node<T>* node, const T& value);
     void     clear_tree (Node<T>* node) const;
 
@@ -55,11 +56,12 @@ public:
     ~BinaryTree();
     
     bool   insert(const T& value);
+    bool   insert(T&& value);
     bool   erase (const T& value);
     bool   empty() const; 
     size_t size () const;
     void   clear();
-    bool contains(const T& value) const;
+    bool   contains(const T& value) const;
 
     Iterator<T> begin() const;
     Iterator<T> end()   const;
@@ -155,12 +157,19 @@ void BinaryTree<T>::clear_tree(Node<T>* node) const {
 
 template <typename T>
 bool BinaryTree<T>::insert(const T& value) {
+    //std::cout << "Inserting by copy: " << value << std::endl;
     root = insert_node(root, value);
-
     // NOTE: 
     // In this example insertion is always successful, even if it is a duplicate,
     // but here we can implement different behavior depending on the logic of our BinaryTree.
-    return true; 
+    return true;
+}
+
+template <typename T>
+bool BinaryTree<T>::insert(T&& value) {
+    //std::cout << "Inserting by move: " << value << std::endl;
+    root = insert_node(root, std::move(value));
+    return true;
 }
 
 // NOTE: in this example duplicates are always inserted into the right subtree.
@@ -173,9 +182,24 @@ Node<T>* BinaryTree<T>::insert_node(Node<T>* node, const T& value) {
 
     if (value < node->data) {
         node->left = insert_node(node->left, value);
-    }
-    else {
+    } else {
         node->right = insert_node(node->right, value); 
+    }
+
+    return node;
+}
+
+template <typename T>
+Node<T>* BinaryTree<T>::insert_node(Node<T>* node, T&& value) {
+    if (!node) {
+        count++;
+        return new Node<T>(std::move(value));
+    }
+
+    if (value < node->data) {
+        node->left = insert_node(node->left, std::forward<T>(value));
+    } else {
+        node->right = insert_node(node->right, std::forward<T>(value)); 
     }
 
     return node;
@@ -191,26 +215,18 @@ Iterator<T> BinaryTree<T>::end() const {
     return Iterator<T>(nullptr);
 }
 
+
 template <typename T>
 Iterator<T> BinaryTree<T>::find(const T& value) const {
-    Node<T>* node = find_node(value);
-    return node ? Iterator<T>(node) : end();
-}
-
-template<typename T>
-Node<T>* BinaryTree<T>::find_node(const T& value) const {
-    Node<T>* node = root;
-    while(node) {
-        if (value < node->data) { node = node->left; }
-        else if (value > node->data) { node = node->right; }
-        else { return node; }
+    for (Iterator<T> it = begin(); it != end(); ++it) {
+        if (*it == value) { return it; }
     }
-    return nullptr;
+    return end();
 }
 
 template<typename T>
 bool BinaryTree<T>::contains(const T& value) const {
-    return find_node(value) != nullptr;
+    return find(value) != end();
 }
 
 template<typename T>
@@ -264,7 +280,21 @@ int main() {
     assert(tree.size() == 0);
     assert(tree.empty() == true);
 
+    //Test: move-semantics
+    BinaryTree<std::string> tree2;
+    std::string name = "Alice";
+    tree2.insert(name);  // insert by lvalue (copy)
+    tree2.insert("Bob"); // insert by rvalue (move)
+
     std::cout << "All tests passed successfully!" << std::endl;
 
     return 0;
 }
+
+// TODO: refactoring:
+// Using move-semantics to reduce copying +
+// Using an iterator in the "find" and contains methods +
+// Splitting tests into separate functions
+// add logging
+// Add additional checks for security
+// Namespace
