@@ -474,4 +474,13 @@ void test_erase()
 
     // Attempting to remove a non-existent element
     assert(tree.erase(10) == false);  // Node 10 does not exist
+
+    std::vector<int> result;
+    std::vector<int> expected = {4, 6, 8};
+    
+    tree.inorder_traversal([&](const int& val) {
+        result.push_back(val);
+    });
+
+    assert(result == expected);
 }
