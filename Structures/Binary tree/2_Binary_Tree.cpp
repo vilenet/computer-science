@@ -72,8 +72,8 @@ public:
     Iterator<T> end()   const;
     Iterator<T> find(const T& value) const;
 
-    void inorder_traversal  (std::function<void(const T&)> visit) const;
-    //void preorder_traversal (std::function<void(const T&)> visit) const;
+    void inorder_traversal(std::function<void(const T&)> visit) const;
+    //void preorder_traversal(std::function<void(const T&)> visit) const;
     //void postorder_traversal(std::function<void(const T&)> visit) const;
 };
 
@@ -333,6 +333,7 @@ int main()
     test_move_semantics();
     test_erase();
     std::cout << "Unit tests passed successfully!" << std::endl;
+
     // Stress tests
     test_massive_insert();
     // NOTE: After successful test_massive_insert test,
@@ -347,7 +348,6 @@ int main()
     test_massive_find();
     test_massive_erase();
     test_massive_iteration();
-    
     std::cout << "Stress tests passed successfully!" << std::endl;
 
     return 0;
