@@ -240,12 +240,43 @@ void BinaryTree<T>::inorder_traversal(std::function<void(const T&)> visit) const
     inorder(root);
 }
 
-////////////////////////////////////////////////////////////////////////////////////
-int main() {
-    BinaryTree<int> tree;
 
+////////////////////////////// [TESTS declaration ] /////////////////////////////////
+void test_empty_tree();
+void test_insert_and_size();
+void test_find();
+void test_contains();
+void test_inorder_traversal();
+void test_clear_tree();
+void test_move_semantics();
+
+////////////////////////////// [ MAIN ] /////////////////////////////////////////////
+int main() 
+{
+    test_empty_tree();
+    test_insert_and_size();
+    test_find();
+    test_contains();
+    test_inorder_traversal();
+    test_clear_tree();
+    test_move_semantics();
+    std::cout << "All tests passed successfully!" << std::endl;
+
+    return 0;
+}
+
+////////////////////////////// [TEST implementation ] /////////////////////////////
+
+// Test: checking for an empty tree
+void test_empty_tree() {
+    BinaryTree<int> tree;
     assert(tree.empty() == true);
     assert(tree.size() == 0);
+}
+
+// Test: insertion and tree size
+void test_insert_and_size() {
+    BinaryTree<int> tree;
 
     tree.insert(5);
     tree.insert(3);
@@ -257,44 +288,91 @@ int main() {
 
     assert(tree.size() == 7);
     assert(tree.empty() == false);
+}
 
-    // Test: find method
+// Test: find method
+void test_find() {
+    BinaryTree<int> tree;
+
+    tree.insert(5);
+    tree.insert(3);
+    tree.insert(7);
+    tree.insert(1);
+    tree.insert(4);
+    tree.insert(6);
+    tree.insert(8);
+
     assert(tree.find(4) != tree.end()); // Node 4 must be found
     assert(tree.find(1) != tree.end()); // Node 1 must be found
     assert(tree.find(5) != tree.end()); // Root 5 must be found
 
     assert(tree.find(10) == tree.end()); // Node 10 should not be found
     assert(tree.find(9) == tree.end());  // Node 9 should not be found
+}
+
+// Test: contains method
+void test_contains() {
+    BinaryTree<int> tree;
+
+    tree.insert(5);
+    tree.insert(3);
+    tree.insert(7);
+    tree.insert(1);
+    tree.insert(4);
+    tree.insert(6);
+    tree.insert(8);
 
     assert(tree.contains(4) == true);
     assert(tree.contains(10) == false);
+}
 
-    // Test inorder_traversal method
+// Test: symmetrical tree traversal (inorder traversal)
+void test_inorder_traversal() {
+    BinaryTree<int> tree;
+
+    tree.insert(5);
+    tree.insert(3);
+    tree.insert(7);
+    tree.insert(1);
+    tree.insert(4);
+    tree.insert(6);
+    tree.insert(8);
+
     std::vector<int> result;
-    std::vector<int> expect = {1, 3, 4, 5, 6, 7, 8};
-    tree.inorder_traversal( [&](const int& val) { result.push_back(val);} );
-    assert(result == expect);
+    std::vector<int> expected = {1, 3, 4, 5, 6, 7, 8};
+    
+    tree.inorder_traversal([&](const int& val) {
+        result.push_back(val);
+    });
 
-    // Test clear method
+    assert(result == expected);
+}
+
+// Test: tree cleaning
+void test_clear_tree() {
+    BinaryTree<int> tree;
+
+    tree.insert(5);
+    tree.insert(3);
+    tree.insert(7);
+    tree.insert(1);
+    tree.insert(4);
+    tree.insert(6);
+    tree.insert(8);
+
     tree.clear();
     assert(tree.size() == 0);
     assert(tree.empty() == true);
-
-    //Test: move-semantics
-    BinaryTree<std::string> tree2;
-    std::string name = "Alice";
-    tree2.insert(name);  // insert by lvalue (copy)
-    tree2.insert("Bob"); // insert by rvalue (move)
-
-    std::cout << "All tests passed successfully!" << std::endl;
-
-    return 0;
 }
 
-// TODO: refactoring:
-// Using move-semantics to reduce copying +
-// Using an iterator in the "find" and contains methods +
-// Splitting tests into separate functions
-// add logging
-// Add additional checks for security
-// Namespace
+// Test: move semantics
+void test_move_semantics() {
+    BinaryTree<std::string> tree;
+    std::string name = "Alice";
+
+    tree.insert(name);  // insert by lvalue (copy)
+    tree.insert("Bob"); // insert by rvalue (move)
+
+    assert(tree.contains("Alice") == true);
+    assert(tree.contains("Bob") == true);
+}
