@@ -343,8 +343,7 @@ int main()
     //       a deep data structure, which leads to memory exhaustion.
     //
     // TODO: Investigate possible solutions:
-    //       1. Using an iterative approach instead of a recursive one 
-    //          for operations: insertion, erasing, clearing.
+    //       1. Using an iterative approach instead of a recursive one.
     //
     //       2. Implementation of a balanced tree (AVL-Tree or Red-Black-Tree).
     //
