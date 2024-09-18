@@ -344,7 +344,9 @@ int main()
     //          for operations: insertion, erasing, clearing.
     //
     //       2. Implementation of a balanced tree (AVL-Tree or Red-Black-Tree).
-    //       3. ...
+    //       3. Leave as is as this is an example of a simple tree,
+    //          then implement the solution in another tree implementation.
+    //       4. ...
     test_massive_find();
     test_massive_erase();
     test_massive_iteration();
