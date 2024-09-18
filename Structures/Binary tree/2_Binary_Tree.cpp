@@ -339,13 +339,18 @@ int main()
     // NOTE: After successful test_massive_insert test,
     //       program terminate: "-1073741571 (stack overflow)".
     //
+    // NOTE: Perhaps the program uses too many recursive calls or accesses
+    //       a deep data structure, which leads to memory exhaustion.
+    //
     // TODO: Investigate possible solutions:
     //       1. Using an iterative approach instead of a recursive one 
     //          for operations: insertion, erasing, clearing.
     //
     //       2. Implementation of a balanced tree (AVL-Tree or Red-Black-Tree).
+    //
     //       3. Leave as is as this is an example of a simple tree,
     //          then implement the solution in another tree implementation.
+    //
     //       4. ...
     test_massive_find();
     test_massive_erase();
