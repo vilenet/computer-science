@@ -145,7 +145,6 @@ void RBTree::fixInsert(Node*& node) {
     root->color = Color::BLACK;
 }
 
-// INSERT
 void RBTree::insert(int value) {
     Node* node    = new Node(value);
     Node* parent  = nullptr;
@@ -184,76 +183,3 @@ int main()
 
     return 0;
 }
-
-
-
-
-// GETTING FAMILY NODES
-// Node* get_uncle(Node* node) {
-
-// }
-
-// Node* get_grand_parent(Node* node) {
-
-// }
-
-// // INSERTING
-// void insert_case1(Node* node) {
-//     if (!node->parent)
-//         node->color = Color::BLACK;
-//     else 
-//         insert_case2(node);
-// }
-
-// void insert_case2(Node* node) {
-//     if (node->parent->color == Color::BLACK)
-//         return;
-//     else
-//         insert_case3(node);
-// }
-
-// void insert_case3(Node* node) {
-//     Node* uncle_node = get_uncle(node);
-//     Node* grand_parent_node;
-
-//     if (uncle_node != nullptr && uncle_node->color == Color::RED) {
-//         node->parent->color      = Color::BLACK;
-//         uncle_node->color        = Color::BLACK;
-//         grand_parent_node        = get_grand_parent(node);
-//         grand_parent_node->color = Color::RED;
-//         insert_case1(grand_parent_node);
-//     }
-//     else {
-//         insert_case4(node);
-//     }
-// }
-
-// void insert_case4(Node* node) {
-//     Node* grand_parent_node = get_grand_parent(node);
-
-//     if ((node == node->parent->right) && (node->parent == grand_parent_node->left)) {
-//         rotate_left(node->parent);
-//         node = node->left;
-//     } 
-//     else if (node == node->parent->left && node->parent == grand_parent_node->right) {
-//         rotate_right(node->parent);
-//         node = node->right;
-//     }
-
-//     insert_case5(node);
-// }
-
-// void insert_case5(Node* node) {
-//     Node* grand_parent_node = get_grand_parent(node);
-
-//     node->parent->color      = Color::BLACK;
-//     grand_parent_node->color = Color::RED;
-
-//     if (node == node->parent->left && node->parent == grand_parent_node->left) {
-//         rotate_right(grand_parent_node);
-//     }
-//     else {
-//         rotate_left(grand_parent_node);
-//     }
-
-// }

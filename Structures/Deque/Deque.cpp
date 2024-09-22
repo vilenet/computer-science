@@ -2,8 +2,15 @@
 #include <memory>
 #include <iterator>
 
+namespace tst
+{
+
+
+//
+// deque
+//
 template<typename T>
-class MyDeque {
+class deque {
 public:
     // Types
     using value_type      = T;
@@ -21,21 +28,21 @@ public:
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     // Constructors
-    MyDeque();
-    explicit MyDeque(size_type count, const T& value = T());
+    deque();
+    explicit deque(size_type count, const T& value = T());
     template<typename InputIt>
-    MyDeque(InputIt first, InputIt last);
-    MyDeque(const MyDeque& other);
-    MyDeque(MyDeque&& other) noexcept;
-    MyDeque(std::initializer_list<T> init);
+    deque(InputIt first, InputIt last);
+    deque(const deque& other);
+    deque(deque&& other) noexcept;
+    deque(std::initializer_list<T> init);
 
     // Деструктор
-    ~MyDeque();
+    ~deque();
 
     // Операторы присваивания
-    MyDeque& operator=(const MyDeque& other);
-    MyDeque& operator=(MyDeque&& other) noexcept;
-    MyDeque& operator=(std::initializer_list<T> init);
+    deque& operator=(const deque& other);
+    deque& operator=(deque&& other) noexcept;
+    deque& operator=(std::initializer_list<T> init);
 
     // Методы доступа
     reference       at(size_type pos);
@@ -53,14 +60,14 @@ public:
     void pop_back();
     void pop_front();
     void clear();
-    void swap(MyDeque& other) noexcept;
+    void swap(deque& other) noexcept;
 
     // Итераторы
     class iterator;
     class const_iterator;
     class reverse_iterator;
     class const_reverse_iterator;
-    
+
     iterator               begin();
     const_iterator         begin() const;
     iterator               end();
@@ -97,6 +104,113 @@ private:
 
     //Другие вспомогательные методы ?
 };
+
+//------------------------------------------------------------------------------
+//
+// iterator
+//
+template<typename T>
+class deque<T>::iterator {
+public:
+    using iterator_category = std::random_access_iterator_tag;
+    using value_type = deque::value_type;
+    using difference_type = deque::difference_type;
+    using pointer = deque::pointer;
+    using reference = deque::reference;
+
+    // Конструкторы
+    iterator();
+    iterator(const iterator& other);
+    // Другие необходимые конструкторы
+
+    // Операторы разыменования
+    reference operator*() const;
+    pointer operator->() const;
+
+    // Операторы инкремента и декремента
+    iterator& operator++();    // Префиксный инкремент
+    iterator operator++(int);  // Постфиксный инкремент
+    iterator& operator--();    // Префиксный декремент
+    iterator operator--(int);  // Постфиксный декремент
+
+    // Арифметические операторы
+    iterator& operator+=(difference_type n);
+    iterator operator+(difference_type n) const;
+    iterator& operator-=(difference_type n);
+    iterator operator-(difference_type n) const;
+    difference_type operator-(const iterator& other) const;
+
+    // Операторы сравнения
+    bool operator==(const iterator& other) const;
+    bool operator!=(const iterator& other) const;
+    bool operator<(const iterator& other) const;
+    bool operator<=(const iterator& other) const;
+    bool operator>(const iterator& other) const;
+    bool operator>=(const iterator& other) const;
+
+    // Оператор индексирования
+    reference operator[](difference_type n) const;
+
+private:
+    // Внутренние данные итератора
+    // Например, указатель на текущий элемент и индексы блоков
+    pointer current_element_;
+    // Дополнительные данные для управления блоками
+};
+
+//
+// const_iterator
+//
+template<typename T>
+class deque<T>::const_iterator {
+public:
+    using iterator_category = std::random_access_iterator_tag;
+    using value_type        = deque::value_type;
+    using difference_type   = deque::difference_type;
+    using pointer           = deque::const_pointer;
+    using reference         = deque::const_reference;
+
+    // Конструкторы
+    const_iterator();
+    const_iterator(const const_iterator& other);
+    const_iterator(const iterator& other); // Преобразование из iterator в const_iterator
+
+    // Операторы разыменования
+    reference operator*() const;
+    pointer operator->() const;
+
+    // Операторы инкремента и декремента
+    const_iterator& operator++();
+    const_iterator operator++(int);
+    const_iterator& operator--();
+    const_iterator operator--(int);
+
+    // Арифметические операторы
+    const_iterator& operator+=(difference_type n);
+    const_iterator  operator+(difference_type n) const;
+    const_iterator& operator-=(difference_type n);
+    const_iterator  operator-(difference_type n) const;
+    difference_type operator-(const const_iterator& other) const;
+
+    // Операторы сравнения
+    bool operator==(const const_iterator& other) const;
+    bool operator!=(const const_iterator& other) const;
+    bool operator<(const const_iterator& other) const;
+    bool operator<=(const const_iterator& other) const;
+    bool operator>(const const_iterator& other) const;
+    bool operator>=(const const_iterator& other) const;
+
+    // Оператор индексирования
+    reference operator[](difference_type n) const;
+
+private:
+    // Внутренние данные итератора
+    const_pointer current_element_;
+    // Дополнительные данные для управления блоками
+};
+
+
+} // END TST NAMESPACE
 
 /*
 map_ (массив указателей на блоки)

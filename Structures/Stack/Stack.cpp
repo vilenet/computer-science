@@ -26,7 +26,7 @@ public:
     // Constructors
     stack() : m_container() {};
     explicit stack(const Container& container) : m_container(container) {}
-    explicit stack(Container&& container) : m_container(std::move(container)) {}
+    explicit stack(Container&& container) noexcept: m_container(std::move(container)) {}
 
 public:
     // Methods
