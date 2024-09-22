@@ -87,7 +87,7 @@ Node* AVL::insert(Node* node, int key, int value) {
         else node->left = insert(node->left, key, value);
     }
     else if (key > node->key) {
-        if (!node->right) { 
+        if (!node->right) {
             node->right = new Node(key, value);  
             count++;
         }
@@ -187,19 +187,6 @@ bool AVL::contains(const int value) const {
     return search(root, value) != nullptr;
 }
 
-std::vector<int> AVL::getVector() const {
-    std::vector<int> result;
-    inorder_to_vector(root, result);
-    return result;
-}
-
-void AVL::inorder_to_vector(Node* node, std::vector<int>& result) const {
-    if (!node) return;
-    inorder_to_vector(node->left, result);
-    result.push_back(node->value);
-    inorder_to_vector(node->right, result);
-}
-
 int AVL::getHeight(Node* node) const { return (!node) ? -1 : node->height; }
 
 void AVL::updateHeight(Node* node) {
@@ -246,37 +233,9 @@ Node* AVL::balance(Node* node) {
     return node;
 }
 
-void AVL::printBalances(const Node* node) const {
-    if (!node) return;
-    printBalances(node->left);
-    std::cout << "Node: " << node->key << ", Balance: " << getBalance(const_cast<Node*>(node)) << std::endl;
-    printBalances(node->right);
-}
-
-void AVL::printBalances() const {
-    printBalances(root);
-}
-
 ///////////////////////// [ MAIN ] /////////////////////////////////////////////
 int main() 
 {
-    AVL tree;
-    tree.insert(3, 30);
-    tree.insert(2, 20);
-    tree.insert(1, 10);
-    tree.insert(5, 50);
-    tree.insert(4, 40);
-    tree.insert(6, 60);
-
-    tree.inorder_traversal_print();
-    std::cout << std::endl;
-    tree.printBalances();
-
-    tree.remove(5);
-
-    tree.inorder_traversal_print();
-    std::cout << std::endl;
-    tree.printBalances();
-
+    
     return 0;
 }

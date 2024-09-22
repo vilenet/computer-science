@@ -4,6 +4,9 @@
 #include <memory>
 #include <algorithm>
 
+template<typename T>
+struct Node;
+
 class BTreePrinter {
 public:
     template<typename T>
