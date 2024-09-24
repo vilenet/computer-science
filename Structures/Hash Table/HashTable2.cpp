@@ -40,9 +40,9 @@ public:
     CHashTable();
     ~CHashTable();
 
-    bool Add(const T& val);
-    bool Find(const T& val);
-    bool Remove(const T& val);
+    bool insert(const T& val);
+    bool find(const T& val);
+    bool erase(const T& val);
 
     std::vector<T> get() const;
 };
@@ -94,7 +94,7 @@ void CHashTable<T>::Resize() {
     for (int i = 0; i < oldCapacity; ++i) {
         if (oldTable[i] && oldTable[i]->bActive) {
             // Rehash old elements
-            Add(oldTable[i]->value);
+            insert(oldTable[i]->value);
             delete oldTable[i];
         }
     }
@@ -102,7 +102,7 @@ void CHashTable<T>::Resize() {
 }
 
 template <class T>
-bool CHashTable<T>::Add(const T& val) {
+bool CHashTable<T>::insert(const T& val) {
     if (iActElQty >= static_cast<int>(LOAD_FACTOR * iTbSize)) {
         Resize();
     }
@@ -130,7 +130,7 @@ bool CHashTable<T>::Add(const T& val) {
 }
 
 template <class T>
-bool CHashTable<T>::Remove(const T& val) {
+bool CHashTable<T>::erase(const T& val) {
     int hash1 = hash_func1(val);
     int hash2 = hash_func2(val);
     int i = 0;
@@ -147,7 +147,7 @@ bool CHashTable<T>::Remove(const T& val) {
 }
 
 template <class T>
-bool CHashTable<T>::Find(const T& val) {
+bool CHashTable<T>::find(const T& val) {
     int hash1 = hash_func1(val);
     int hash2 = hash_func2(val);
     int i = 0;
@@ -176,9 +176,9 @@ std::vector<T> CHashTable<T>::get() const {
 }
 
 //------------------------------------------------------------------------------
-void testAdd();
+void testInsert();
 void testFind();
-void testRemove();
+void testErase();
 void run_all_tests();
 
 //------------------------------------------------------------------------------
@@ -191,18 +191,18 @@ int main()
 
 //------------------------------------------------------------------------------
 void run_all_tests() {
-    testAdd();
+    testInsert();
     testFind();
-    testRemove();
+    testErase();
     std::cout << "All tests passed!\n";
 }
 
-void testAdd() {
+void testInsert() {
     CHashTable<std::string> ht;
-    assert(ht.Add("s1") == true);
-    assert(ht.Add("s2") == true);
-    assert(ht.Add("s1") == false);
-    assert(ht.Add("s3") == true);
+    assert(ht.insert("s1") == true);
+    assert(ht.insert("s2") == true);
+    assert(ht.insert("s1") == false);
+    assert(ht.insert("s3") == true);
 
     std::vector<std::string> elements = ht.get();
     std::unordered_set<std::string> elementSet(elements.begin(), elements.end());
@@ -213,22 +213,22 @@ void testAdd() {
 
 void testFind() {
     CHashTable<std::string> ht;
-    ht.Add("s1");
-    ht.Add("s2");
+    ht.insert("s1");
+    ht.insert("s2");
 
-    assert(ht.Find("s1") == true);
-    assert(ht.Find("s2") == true);
-    assert(ht.Find("s3") == false);
+    assert(ht.find("s1") == true);
+    assert(ht.find("s2") == true);
+    assert(ht.find("s3") == false);
 }
 
-void testRemove() {
+void testErase() {
     CHashTable<std::string> ht;
-    ht.Add("s1");
-    ht.Add("s2");
+    ht.insert("s1");
+    ht.insert("s2");
 
-    assert(ht.Remove("s2") == true);
-    assert(ht.Remove("s2") == false);
-    assert(ht.Remove("s3") == false);
+    assert(ht.erase("s2") == true);
+    assert(ht.erase("s2") == false);
+    assert(ht.erase("s3") == false);
 
     std::vector<std::string> elements = ht.get();
     std::vector<std::string> expected = { "s1" };
