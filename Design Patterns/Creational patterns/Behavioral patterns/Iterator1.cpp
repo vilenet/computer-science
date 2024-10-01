@@ -21,17 +21,17 @@ template <typename T>
 class ConcreteIterator : public Iterator<T> {
 private:
     std::vector<T>& collection;
-    size_t currentIndex;
+    size_t index;
 
 public:
-    ConcreteIterator(std::vector<T>& col) : collection(col), currentIndex(0) {}
+    ConcreteIterator(std::vector<T>& col) : collection(col), index(0) {}
 
     T next() override {
-        return collection[currentIndex++];
+        return collection[index++];
     }
 
     bool hasNext() const override {
-        return currentIndex < collection.size();
+        return index < collection.size();
     }
 };
 

@@ -23,35 +23,35 @@ public:
 template<typename T>
 class ConcreteIterator : public Iterator<T> {
 public:
-    ConcreteIterator(std::vector<T>& vec) : m_array(vec), m_index(0) {}
+    ConcreteIterator(std::vector<T>& vec) : collection(vec), index(0) {}
 
     T& next() override {
         if (!hasNext()) throw std::out_of_range("No more elements.");
-        return m_array[m_index++];
+        return collection[index++];
     }
 
     bool hasNext() const override {
-        return m_index < m_array.size();
+        return index < collection.size();
     }
 
 private:
-    std::vector<T>& m_array;
-    size_t m_index;
+    std::vector<T>& collection;
+    size_t index;
 };
 
 template<typename T>
 class ConcreteAggregate : public Aggregate<T> {
 public:
-    ConcreteAggregate(std::initializer_list<T> list) : m_array(list) {}
+    ConcreteAggregate(std::initializer_list<T> list) : collection(list) {}
 
     std::unique_ptr<Iterator<T>> createIterator() const override {
-        return std::make_unique<ConcreteIterator<T>>(const_cast<std::vector<T>&>(m_array));
+        return std::make_unique<ConcreteIterator<T>>(const_cast<std::vector<T>&>(collection));
     }
 
-    int size() const { return m_array.size(); }
+    int size() const { return collection.size(); }
 
 private:
-    std::vector<T> m_array;
+    std::vector<T> collection;
 };
 
 int main() 
