@@ -1,6 +1,7 @@
-// Factory Method design pattern
+// Factory Method
 #include <iostream>
 #include <memory>
+using namespace std;
 
 class IProduct {
 public:
@@ -10,35 +11,31 @@ public:
 
 class ConcreteProductA : public IProduct {
 public:
-    void display() const override {
-        std::cout << "Using ConcreteProductA" << std::endl;
-    }
+    void display() const override { cout << "ConcreteProductA" << endl; }
 };
 
 class ConcreteProductB : public IProduct {
 public:
-    void display() const override {
-        std::cout << "Using ConcreteProductB" << std::endl;
-    }
+    void display() const override { cout << "ConcreteProductB" << endl; }
 };
 
 class ICreator {
 public:
-    virtual std::unique_ptr<IProduct> createProduct() const = 0;
+    virtual unique_ptr<IProduct> createProduct() const = 0;
     virtual ~ICreator() = default;
 };
 
 class ConcreteCreatorA : public ICreator {
 public:
-    std::unique_ptr<IProduct> createProduct() const override {
-        return std::make_unique<ConcreteProductA>();
+    unique_ptr<IProduct> createProduct() const override {
+        return make_unique<ConcreteProductA>();
     }
 };
 
 class ConcreteCreatorB : public ICreator {
 public:
-    std::unique_ptr<IProduct> createProduct() const override {
-        return std::make_unique<ConcreteProductB>();
+    unique_ptr<IProduct> createProduct() const override {
+        return make_unique<ConcreteProductB>();
     }
 };
 
@@ -52,11 +49,9 @@ void clientCode(const ICreator& creator) {
 
 int main() 
 {
-    std::cout << "Using ConcreteCreatorA:\n";
     ConcreteCreatorA creatorA;
     clientCode(creatorA);
 
-    std::cout << "Using ConcreteCreatorB:\n";
     ConcreteCreatorB creatorB;
     clientCode(creatorB);
 
