@@ -1,52 +1,101 @@
 #include <iostream>
+#include <initializer_list>
+using namespace std;
 
-struct Node{
-    int data;
-    Node* next;
-    Node(int value) : data(value), next(nullptr) {}
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class LinkedList
-{
+class LinkedList {
 private:
-    Node* head;
+    ListNode* head;
 
 public:
     LinkedList() : head(nullptr) {}
 
-    ~LinkedList(){
-        while (head != nullptr){
-            Node* temp = head;
-            head = head->next;
-            delete temp;
+    LinkedList(initializer_list<int> initList) : head(nullptr) {
+        for (int value : initList) { 
+            append(value);
         }
     }
 
-    void add(int value){
-        Node* newNode = new Node(value);
+    LinkedList(const LinkedList& other) : head(nullptr) {
+        ListNode* current = other.head;
+        while(current != nullptr) {
+            append(current->val);
+            current = current->next;
+        }
+    }
 
-        if (head == nullptr){
+    LinkedList(LinkedList&& other) noexcept : head(other.head) {
+        other.head = nullptr;
+    }
+
+    ~LinkedList() { clear(); }
+
+    LinkedList& operator=(const LinkedList& other) {
+        if (this != &other) {
+            clear();
+            ListNode* current = other.head;
+            while (current != nullptr) {
+                append(current->val);
+                current = current->next;
+            }
+        }
+        return *this;
+    }
+    
+    LinkedList& operator=(LinkedList&& other) noexcept {
+        if (this != &other) {
+            clear();
+            head = other.head;
+            other.head = nullptr;
+        }
+        return *this;
+    }
+
+    void append(int value){
+        ListNode* newNode = new ListNode(value);
+
+        if (head == nullptr) {
             head = newNode;
         }
-        else{
-            Node* temp = head;
-            while (temp->next != nullptr){
-                temp = temp->next;
+        else {
+            ListNode* current = head;
+            while (current->next != nullptr){
+                current = current->next;
             }
-            temp->next = newNode;
+            current->next = newNode;
         }
+    }
+
+    void clear() {
+        ListNode* current = head;
+        while (current != nullptr) {
+            ListNode* temp = current;
+            current = current->next;
+            delete temp;
+        }
+        head = nullptr;
     }
 
     class Iterator
     {
     private:
-        Node* current;
+        ListNode* current;
 
     public:
-        Iterator(Node* node) : current(node) {}
+        explicit Iterator(ListNode* node) : current(node) {}
 
         int& operator*(){
-            return current->data;
+            if (current == nullptr) {
+                throw std::runtime_error("Dereferencing end iterator");
+            }
+            return current->val;
         }
 
         Iterator& operator++(){
@@ -56,30 +105,32 @@ public:
             return *this;
         }
 
+        Iterator operator++(int) {
+            Iterator temp = *this;
+            ++(*this);
+            return temp;
+        }
+
         bool operator!=(const Iterator& other) const{
             return current != other.current;
         }
     };
 
-    Iterator begin() const{
+    Iterator begin() const {
         return Iterator(head);
     }
 
-    Iterator end() const{
+    Iterator end() const {
         return Iterator(nullptr);
     }
 };
 
 int main()
 {
-    LinkedList list;
-
-    list.add(1);
-    list.add(2);
-    list.add(3);
+    LinkedList list {1, 2, 3};
 
     for (auto n : list){
-        std::cout << n << " ";
+        cout << n << " ";
     }
 
     return 0;
