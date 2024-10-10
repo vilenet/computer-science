@@ -35,6 +35,13 @@ public:
         other.head = nullptr;
     }
 
+    LinkedList(ListNode* node) : head(nullptr) {
+        while (node != nullptr) {
+            append(node->val);
+            node = node->next;
+        }
+    }
+
     ~LinkedList() { clear(); }
 
     LinkedList& operator=(const LinkedList& other) {
@@ -56,6 +63,21 @@ public:
             other.head = nullptr;
         }
         return *this;
+    }
+
+    bool operator==(const LinkedList& other) {
+        ListNode* current1 = head;
+        ListNode* current2 = other.head;
+
+        while (current1 != nullptr && current2 != nullptr) {
+            if (current1->val != current2->val) {
+                return false;
+            }
+            current1 = current1->next;
+            current2 = current2->next;
+        }
+
+        return current1 == nullptr && current2 == nullptr;
     }
 
     void append(int value){
